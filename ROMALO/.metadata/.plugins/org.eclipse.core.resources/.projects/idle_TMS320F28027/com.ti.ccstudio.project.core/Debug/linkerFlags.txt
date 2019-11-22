@@ -1,0 +1,1 @@
+-v28 -ml -mt -g --diag_warning=225 --diag_wrap=off --display_error_number -z -m"idle_TMS320F28027.map" --stack_size=0x300 --warn_sections -i"C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/lib" -i"C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="idle_TMS320F28027_linkInfo.xml" --rom_model 

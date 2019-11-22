@@ -1,0 +1,31 @@
+/*
+ * SCI.c
+ *
+ *  Created on: Nov 21, 2019
+ *      Author: marki
+ */
+
+#include "SCI/SCI.h"
+
+
+// Transmit a character from the SCI
+void scia_xmit(int a)
+{
+    while(SCI_getTxFifoStatus(mySci) != SCI_FifoStatus_Empty)
+    {
+    }
+
+    SCI_putDataBlocking(mySci, a);
+}
+
+void scia_msg(char * msg)
+{
+    int i;
+    i = 0;
+    while(msg[i] != '\0')
+    {
+        scia_xmit(msg[i]);
+        i++;
+    }
+}
+

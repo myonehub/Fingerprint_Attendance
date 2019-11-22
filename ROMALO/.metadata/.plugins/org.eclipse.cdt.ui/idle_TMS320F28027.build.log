@@ -1,0 +1,22 @@
+
+**** Build of configuration Debug for project idle_TMS320F28027 ****
+
+"C:\\ti\\ccsv8\\utils\\bin\\gmake" -k -j 4 all -O 
+ 
+making ../src/sysbios/sysbios.a28L ...
+gmake[1]: Nothing to be done for 'all'.
+Building file: "../idle.c"
+Invoking: C2000 Compiler
+"C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/bin/cl2000" -v28 -ml -mt --include_path="C:/Users/marki/OneDrive/Desktop/12345/idle_TMS320F28027" --include_path="C:/ti/bios_6_76_02_02/packages/ti/posix/ccs" --include_path="C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/include" -g --diag_warning=225 --diag_wrap=off --display_error_number --preproc_with_compile --preproc_dependency="idle.d_raw" --cmd_file="configPkg/compiler.opt" "../idle.c"
+Finished building: "../idle.c"
+ 
+making ../src/sysbios/sysbios.a28L ...
+gmake[2]: Nothing to be done for 'all'.
+Building target: "idle_TMS320F28027.out"
+Invoking: C2000 Linker
+"C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/bin/cl2000" -v28 -ml -mt -g --diag_warning=225 --diag_wrap=off --display_error_number -z -m"idle_TMS320F28027.map" --stack_size=0x300 --warn_sections -i"C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/lib" -i"C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="idle_TMS320F28027_linkInfo.xml" --rom_model -o "idle_TMS320F28027.out" "./DelayUs.obj" "./DeviceInit_18Nov2018.obj" "./F2802x_GlobalVariableDefs.obj" "./idle.obj" "../F2802x_Headers_BIOS.cmd" "../TMS320F28027.cmd" -l"configPkg/linker.cmd" -llibc.a 
+<Linking>
+Finished building target: "idle_TMS320F28027.out"
+ 
+
+**** Build Finished ****
