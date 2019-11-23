@@ -9,11 +9,21 @@
 //===============================================================
 
 #include "Peripheral_Headers/F2802x_Device.h"
+#include "Peripheral_Headers/F2802x_Sci.h"
+
+
 //function prototypes:
 extern void DelayUs(Uint16);
-
+void scia_txmit(int a);
+void scia_msg(char *msg);
+void sci_init(void);
 
 void DeviceInit(void);
+
+#define CPU_FREQ    60E6        // Default = 15 MHz. Change to 60E6 for 60 MHz devices
+#define LSPCLK_FREQ CPU_FREQ/4
+#define SCI_FREQ    100E3
+#define SCI_PRD     (LSPCLK_FREQ/(SCI_FREQ*8))-1
 
 //---------------------------------------------------------------
 //  Configure Device for target Application Here
@@ -24,7 +34,8 @@ void DeviceInit(void)
 
 // LOW SPEED CLOCKS prescale register settings
    SysCtrlRegs.LOSPCP.all = 0x0002; // Sysclk / 4 (15 MHz)
-   SysCtrlRegs.XCLK.bit.XCLKOUTDIV=2;
+   //SysCtrlRegs.LOSPCP.bit.LSPCLK = 0; // Low speed clock = SYSCLKOUT/1
+   SysCtrlRegs.XCLK.bit.XCLKOUTDIV = 2;
       	
 // PERIPHERAL CLOCK ENABLES 
 //---------------------------------------------------
@@ -43,7 +54,7 @@ void DeviceInit(void)
    //------------------------------------------------
    SysCtrlRegs.PCLKCR0.bit.SPIAENCLK = 0;	// SPI-A
    //------------------------------------------------
-   SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;  	// SCI-A
+   SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;  	// SCI-A LSPCLK low-speed
    //------------------------------------------------
    SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 0;	//eCAP1
    //------------------------------------------------
@@ -140,11 +151,11 @@ void DeviceInit(void)
 //  GPIO-08 - GPIO-11 Do Not Exist
 //---------------------------------------------------------------
 //  GPIO-12 - PIN FUNCTION = Normally Open pushbutton S3 on LaunchPad (pulled-down) --Spare--
-	GpioCtrlRegs.GPAMUX1.bit.GPIO12 = 2; // 0=GPIO,  1=TZ1,  2=SCITX-A,  3=Resv
+	GpioCtrlRegs.GPAMUX1.bit.GPIO12 = 0; // 0=GPIO,  1=TZ1,  2=SCITX-A,  3=Resv
 	GpioCtrlRegs.GPADIR.bit.GPIO12 = 1; // 1=OUTput,  0=INput
 //	GpioDataRegs.GPACLEAR.bit.GPIO12 = 1;	// uncomment if --> Set Low initially
 //	GpioDataRegs.GPASET.bit.GPIO12 = 1; // uncomment if --> Set High initially
-	//GpioCtrlRegs.GPAPUD.bit.GPIO12 = 1; //disable internal pull-up resistor
+	//GpioCtrlRegs.GPAPUD.bit.GPIO12 = 1; //Disable pull-up for GPIO12 (SCITXDA)
 	//GpioIntRegs.GPIOXINT1SEL.bit.GPIOSEL = 12;
 //---------------------------------------------------------------
 //  GPIO-13 - GPIO-15 = Do Not Exist
@@ -172,17 +183,18 @@ void DeviceInit(void)
 	//XIntruptRegs.XINT1CR.bit.ENABLE = 1;
 //---------------------------------------------------------------
 //  GPIO-18 - PIN FUNCTION = --Spare--
-	GpioCtrlRegs.GPAMUX2.bit.GPIO18 = 0; // 0=GPIO,  1=SPICLK-A,  2=SCITX-A,  3=XCLKOUT
-	GpioCtrlRegs.GPADIR.bit.GPIO18 = 0; // 1=OUTput,  0=INput 
+	GpioCtrlRegs.GPAMUX2.bit.GPIO18 = 2; // 0=GPIO,  1=SPICLK-A,  2=SCITX-A,  3=XCLKOUT
+	GpioCtrlRegs.GPADIR.bit.GPIO18 = 0; // 1=OUTput,  0=INput
 //	GpioDataRegs.GPACLEAR.bit.GPIO18 = 1;	// uncomment if --> Set Low initially
 //	GpioDataRegs.GPASET.bit.GPIO18 = 1; // uncomment if --> Set High initially
+	GpioCtrlRegs.GPAPUD.bit.GPIO12 = 1; //Disable pull-up for GPIO18 (SCITXDA)
 //---------------------------------------------------------------
 //  GPIO-19 - PIN FUNCTION = --Spare--
 	GpioCtrlRegs.GPAMUX2.bit.GPIO19 = 0; // 0=GPIO,  1=SPISTE-A,  2=SCIRX-A,  3=ECAP1
 	GpioCtrlRegs.GPADIR.bit.GPIO19 = 0; // 1=OUTput,  0=INput
 	GpioDataRegs.GPACLEAR.bit.GPIO19 = 1;	// uncomment if --> Set Low initially
 //	GpioDataRegs.GPASET.bit.GPIO19 = 1; // uncomment if --> Set High initially
-	GpioCtrlRegs.GPAPUD.bit.GPIO19 = 0; //able internal pull-up resistor
+
 /*	GpioCtrlRegs.GPAPUD.bit.GPIO19 = 1; //disable internal pull-up resistor
 	GpioIntRegs.GPIOXINT1SEL.bit.GPIOSEL = 19;
 	XIntruptRegs.XINT1CR.bit.POLARITY = 1;
@@ -191,16 +203,19 @@ void DeviceInit(void)
 //  GPIO-20 - GPIO-27 = Do Not Exist
 //---------------------------------------------------------------
 //  GPIO-28 - PIN FUNCTION = --Spare-- (can connect to SCIRX on LaunchPad)
-	GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 0; // 0=GPIO,  1=SCIRX-A,  2=I2C-SDA,  3=TZ2
-//	GpioCtrlRegs.GPADIR.bit.GPIO28 = 0; // 1=OUTput,  0=INput 
+	GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 1; // 0=GPIO,  1=SCIRX-A,  2=I2C-SDA,  3=TZ2
+	GpioCtrlRegs.GPADIR.bit.GPIO28 = 0; // 1=OUTput,  0=INput
 //	GpioDataRegs.GPACLEAR.bit.GPIO28 = 1;	// uncomment if --> Set Low initially
 //	GpioDataRegs.GPASET.bit.GPIO28 = 1; // uncomment if --> Set High initially
+	GpioCtrlRegs.GPAPUD.bit.GPIO28 = 0;    // Enable pull-up for GPIO28 (SCIRXDA)
+	GpioCtrlRegs.GPAQSEL2.bit.GPIO28 = 3;  // Asynch input GPIO28 (SCIRXDA)
 //---------------------------------------------------------------
 //  GPIO-29 - PIN FUNCTION = --Spare-- (can connect to SCITX on LaunchPad)
-	GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 0; // 0=GPIO,  1=SCITXD-A,  2=I2C-SCL,  3=TZ3
-//	GpioCtrlRegs.GPADIR.bit.GPIO29 = 0; // 1=OUTput,  0=INput 
+	GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 1; // 0=GPIO,  1=SCITXD-A,  2=I2C-SCL,  3=TZ3
+	GpioCtrlRegs.GPADIR.bit.GPIO29 = 1; // 1=OUTput,  0=INput
 //	GpioDataRegs.GPACLEAR.bit.GPIO29 = 1;	// uncomment if --> Set Low initially
 //	GpioDataRegs.GPASET.bit.GPIO29 = 1; // uncomment if --> Set High initially
+	GpioCtrlRegs.GPAPUD.bit.GPIO29 = 1;       // Disable pull-up for GPIO29 (SCITXDA)
 //---------------------------------------------------------------
 //  GPIO-30 - GPIO-31 = Do Not Exist
 //---------------------------------------------------------------
@@ -255,15 +270,42 @@ void DeviceInit(void)
 	    AdcRegs.ADCSOC0CTL.bit.ACQPS = 0x6; //set SOC0 window to 7 ADCCLKs
 	    AdcRegs.INTSEL1N2.bit.INT1SEL = 0; //connect interrupt ADCINT1 to EOC0
 	    AdcRegs.INTSEL1N2.bit.INT1E = 1; //enable interrupt ADCINT1
-
-	EDIS;	// restore protection of registers
 */
 
-//---------------------------------------------------------------
-//INITIALIZE A-D
-//---------------------------------------------------------------
-
+	EDIS;   // restore protection of registers
 } // end DeviceInit()
+//---------------------------------------------------------------
+//INITIALIZE SCIoi
+//---------------------------------------------------------------
+void sci_init(void)
+{
+    EALLOW; // temporarily unprotect registers
+    SciaRegs.SCICTL1.all =0x0003;  // enable TX, RX, internal SCICLK,
+                                   // Disable RX ERR, SLEEP, TXWAKE
+    SciaRegs.SCICCR.bit.SCICHAR = 8; // 8 bits data
+    SciaRegs.SCICCR.bit.LOOPBKENA = 0; // disable Loopback
+    SciaRegs.SCICCR.bit.PARITYENA = 0; // disable Parity
+    SciaRegs.SCICCR.bit.STOPBITS = 0; // 1 stop bit
+    SciaRegs.SCILBAUD = 195; // Baud Rate = LSPCLK/((BRR + 1)*8) = 9600
+
+    SciaRegs.SCICTL2.bit.TXINTENA =1;
+    SciaRegs.SCICTL2.bit.RXBKINTENA =1;
+    SciaRegs.SCIHBAUD = 0x0000;
+    SciaRegs.SCICCR.bit.LOOPBKENA =1; // Enable loop back
+    SciaRegs.SCIFFTX.all=0xC022;
+    SciaRegs.SCIFFRX.all=0x0022;
+    SciaRegs.SCIFFCT.all=0x00;
+
+    SciaRegs.SCICTL1.all =0x0023;     // Relinquish SCI from Reset
+    SciaRegs.SCIFFTX.bit.TXFIFOXRESET=1;
+    SciaRegs.SCIFFRX.bit.RXFIFORESET=1;
+
+    EDIS;   // restore protection of registers
+}
+
+
+
+
 
 //===============================================================
 // End of file

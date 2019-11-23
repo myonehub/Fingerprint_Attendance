@@ -3313,7 +3313,7 @@
         <module name="xdc.cfg.SourceDir"
                 used="true"
                 uses="">
-            <feature name="outputDir" type="string" value="C%3A%5CUsers%5Cmarki%5COneDrive%5CDesktop%5C12345%5Cidle_TMS320F28027/src"/>
+            <feature name="outputDir" type="string" value="C%3A%5CUsers%5Cmarki%5COneDrive%5CDesktop%5CFingerprint_Attendance%5C12345%5Cidle_TMS320F28027/src"/>
             <feature name="toBuildDir" type="string" value=".."/>
             <feature name="makefileName" type="string" value="makefile.libs"/>
             <feature name="verbose" type="number" value="2"/>
@@ -6495,7 +6495,7 @@
                 uses="">
         </module>
     </package>
-    <package name="configPkg" version="" repository="C:/Users/marki/OneDrive/Desktop/12345/idle_TMS320F28027/Debug/">
+    <package name="configPkg" version="" repository="C:/Users/marki/OneDrive/Desktop/Fingerprint_Attendance/12345/idle_TMS320F28027/Debug/">
     </package>
     <package name="xdc.services.io" version="1,0,0,0" repository="C:/ti/xdctools_3_51_01_18_core/packages/">
         <module name="xdc.services.io.File"

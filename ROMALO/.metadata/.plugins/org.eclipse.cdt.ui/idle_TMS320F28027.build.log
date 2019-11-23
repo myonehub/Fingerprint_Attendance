@@ -3,12 +3,19 @@
 
 "C:\\ti\\ccsv8\\utils\\bin\\gmake" -k -j 4 all -O 
  
+        1 file(s) copied.
 making ../src/sysbios/sysbios.a28L ...
+Building file: "../idle.cfg"
 gmake[1]: Nothing to be done for 'all'.
-Building file: "../idle.c"
-Invoking: C2000 Compiler
-"C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/bin/cl2000" -v28 -ml -mt --include_path="C:/Users/marki/OneDrive/Desktop/12345/idle_TMS320F28027" --include_path="C:/ti/bios_6_76_02_02/packages/ti/posix/ccs" --include_path="C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS/include" -g --diag_warning=225 --diag_wrap=off --display_error_number --preproc_with_compile --preproc_dependency="idle.d_raw" --cmd_file="configPkg/compiler.opt" "../idle.c"
-Finished building: "../idle.c"
+Invoking: XDCtools
+"C:/ti/xdctools_3_51_01_18_core/xs" --xdcpath="C:/ti/bios_6_76_02_02/packages;" xdc.tools.configuro -o configPkg -t ti.targets.C28_large -p ti.platforms.tms320x28:TMS320F28027 -r release -c "C:/ti/ccsv8/tools/compiler/ti-cgt-c2000_18.1.4.LTS" --compileOptions "-g" "../idle.cfg"
+configuring idle.x28L from package/cfg/idle_p28L.cfg ...
+generating custom ti.sysbios library makefile ... 
+Starting build of library sources ...
+making C:/Users/marki/OneDrive/Desktop/Fingerprint_Attendance/12345/idle_TMS320F28027/src/sysbios/sysbios.a28L ...
+Build of libraries done.
+cl28L package/cfg/idle_p28L.c ...
+Finished building: "../idle.cfg"
  
 making ../src/sysbios/sysbios.a28L ...
 gmake[2]: Nothing to be done for 'all'.

@@ -1,6 +1,6 @@
 #define __signed_chars__ 1	/* Predefined */
-#define __DATE__ "Nov 19 2019"	/* Predefined */
-#define __TIME__ "19:48:24"	/* Predefined */
+#define __DATE__ "Nov 22 2019"	/* Predefined */
+#define __TIME__ "13:17:46"	/* Predefined */
 #define __STDC__ 1	/* Predefined */
 #define __STDC_HOSTED__ 1	/* Predefined */
 #define __cplusplus 199711L	/* Predefined */

@@ -9,8 +9,8 @@
  */
 
 
--l"C:\Users\marki\OneDrive\Desktop\12345\idle_TMS320F28027\Debug\configPkg\package\cfg\idle_p28L.o28L"
--l"C:\Users\marki\OneDrive\Desktop\12345\idle_TMS320F28027\src\sysbios\sysbios.a28L"
+-l"C:\Users\marki\OneDrive\Desktop\Fingerprint_Attendance\12345\idle_TMS320F28027\Debug\configPkg\package\cfg\idle_p28L.o28L"
+-l"C:\Users\marki\OneDrive\Desktop\Fingerprint_Attendance\12345\idle_TMS320F28027\src\sysbios\sysbios.a28L"
 -l"C:\ti\bios_6_76_02_02\packages\ti\catalog\c2800\init\lib\Boot.a28L"
 -l"C:\ti\bios_6_76_02_02\packages\ti\targets\rts2800\lib\ti.targets.rts2800.a28L"
 -l"C:\ti\bios_6_76_02_02\packages\ti\targets\rts2800\lib\boot.a28L"

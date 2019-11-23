@@ -14,9 +14,6 @@
  <void id="ArrayList0" method="get">
   <object idref="SolutionManager$PersistState0"/>
   <void method="add">
-   <string>C:\Users\marki\OneDrive\Desktop\ROMALO\dvt\AnalysisSolutionsTemp\AnalysisSolution1574376882870\null</string>
-  </void>
-  <void method="add">
    <string>C:\ti\ccsv8\ccs_base\dvt_4.1.0.201810301124\CodeGen\solutions\CodeGenCoverage</string>
   </void>
  </void>

@@ -11,7 +11,7 @@ var makeAssembly = false;
 var Executable = xdc.module('xdc.bld.Executable');
 
 var exeOpts = new Executable.Attrs({
-        cfgScript: 'C:/Users/marki/OneDrive/Desktop/12345/idle_TMS320F28027/idle.cfg',
+        cfgScript: 'C:/Users/marki/OneDrive/Desktop/Fingerprint_Attendance/12345/idle_TMS320F28027/idle.cfg',
         profile: 'release',
         cfgHome: 'configPkg',
 });
@@ -41,7 +41,7 @@ else {
 
 var thisObj = {
     cfg:        '../idle.cfg',
-    outputPath: 'C:/Users/marki/OneDrive/Desktop/12345/idle_TMS320F28027/Debug/configPkg',
+    outputPath: 'C:/Users/marki/OneDrive/Desktop/Fingerprint_Attendance/12345/idle_TMS320F28027/Debug/configPkg',
     exeName:    'idle' + suffix,
     exeIntName: 'idle' + suffix.replace('.', '_'),
     targ:       targ,

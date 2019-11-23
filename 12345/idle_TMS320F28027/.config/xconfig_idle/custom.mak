@@ -7,5 +7,5 @@
 #       or equal to the generated config header
 #
 linker.cmd: package/cfg/idle_p28L.xdl
-	$(SED) 's"^\"\(package/cfg/idle_p28Lcfg.cmd\)\"$""\"C:/Users/marki/OneDrive/Desktop/12345/idle_TMS320F28027/.config/xconfig_idle/\1\""' package/cfg/idle_p28L.xdl > $@
+	$(SED) 's"^\"\(package/cfg/idle_p28Lcfg.cmd\)\"$""\"C:/Users/marki/OneDrive/Desktop/Fingerprint_Attendance/12345/idle_TMS320F28027/.config/xconfig_idle/\1\""' package/cfg/idle_p28L.xdl > $@
 	-$(SETDATE) -r:max package/cfg/idle_p28L.h compiler.opt compiler.opt.defs

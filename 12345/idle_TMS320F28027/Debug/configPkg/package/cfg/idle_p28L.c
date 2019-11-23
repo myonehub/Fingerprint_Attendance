@@ -1437,7 +1437,7 @@ __FAR__ const xdc_SizeT ti_sysbios_knl_Task_Module_State_terminatedQ__O = offset
  *  Define absolute path prefix for this executable's
  *  configuration generated files.
  */
-xdc__META(__ASM__, "@(#)__ASM__ = C:/Users/marki/OneDrive/Desktop/12345/idle_TMS320F28027/Debug/configPkg/package/cfg/idle_p28L");
+xdc__META(__ASM__, "@(#)__ASM__ = C:/Users/marki/OneDrive/Desktop/Fingerprint_Attendance/12345/idle_TMS320F28027/Debug/configPkg/package/cfg/idle_p28L");
 
 /*
  *  ======== __ISA__ ========
@@ -3926,7 +3926,7 @@ ti_sysbios_family_c28_Timer_Object__ ti_sysbios_family_c28_Timer_Object__table__
         },  /* emulationModeInit */
         ti_sysbios_interfaces_ITimer_RunMode_CONTINUOUS,  /* runMode */
         ti_sysbios_interfaces_ITimer_StartMode_AUTO,  /* startMode */
-        (xdc_UInt32)0x9c4,  /* period */
+        (xdc_UInt32)0x7a120,  /* period */
         ti_sysbios_interfaces_ITimer_PeriodType_COUNTS,  /* periodType */
         (xdc_UInt16)0x0,  /* prescale */
         (xdc_UInt)0x26,  /* intNum */

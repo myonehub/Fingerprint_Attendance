@@ -18,7 +18,7 @@
 #define getTempSlope (*(int (*)(void))0x3d7e80)
 #define getTempOffset (*(int (*)(void))0x3d7e83)
 
-
+//#include "load.h"
 #include <xdc/std.h>
 //#include <xdc/runtime/Log.h>
 #include <ti/sysbios/BIOS.h>
@@ -41,6 +41,9 @@ int16 Col4, Col3, Col2, Col1, Row4, Row3, Row2, Row1;
 
 //function prototypes:
 extern void DeviceInit(void);
+extern void scia_txmit(int a);
+extern void scia_msg(char *msg);
+extern void sci_init(void);
 //void update(unsigned char);
 //void rowCheck(void);
 
@@ -84,6 +87,7 @@ Int main()
      */
     //Gpio_select();
     DeviceInit(); //initialize peripherals
+
     //temp_slope = getTempSlope();
     //temp_offset = getTempOffset();
 
@@ -133,74 +137,6 @@ Void myIdleFxn(Void)
 {
     if (isrFlag == TRUE) {
         isrFlag = FALSE;
-        //GpioDataRegs.GPATOGGLE.bit.GPIO0 = 1;
-        //read ADC value from temperature sensor:
-        /*AdcRegs.ADCSOCFRC1.all = 0x1; //start conversion via software
-        while(AdcRegs.ADCINTFLG.bit.ADCINT1 == 0)
-            {
-            ; //wait for interrupt flag to be set
-            }
-        AdcRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //clear interrupt flag
-
-        temp_reading = AdcResult.ADCRESULT0; //get reading
-
-        temp_celsius = (int32)(temp_reading - temp_offset) * (int32)temp_slope;*/
-
-        // cycle through the 4x4 keypad columns
-
-        /*if (state == 1)
-        {
-            GpioDataRegs.GPASET.bit.GPIO3 = 1; // Set GPIO3 pin
-            GpioDataRegs.GPACLEAR.bit.GPIO0 = 1; //Clear GPIO0 pin
-            rowCheck();
-            state = 2;
-        }
-        else if (state == 2)
-        {
-            GpioDataRegs.GPASET.bit.GPIO0 = 1; // Set GPIO0 pin
-            GpioDataRegs.GPACLEAR.bit.GPIO1 = 1; //Clear GPIO1 pin
-            rowCheck();
-            state = 3;
-        }
-        else if (state == 3)
-        {
-            GpioDataRegs.GPASET.bit.GPIO1 = 1; // Set GPIO1 pin
-            GpioDataRegs.GPACLEAR.bit.GPIO2 = 1; //Clear GPIO2 pin
-            rowCheck();
-            state = 4;
-        }
-        else
-        {
-            GpioDataRegs.GPASET.bit.GPIO2 = 1; // Set GPIO2 pin
-            GpioDataRegs.GPACLEAR.bit.GPIO3 = 1; //Clear GPIO3 pin
-            rowCheck();
-            state = 1;
-        }*/
-
-        /*row1Check = Row1;
-        row2Check = Row2;
-        row3Check = Row3;
-        row4Check = Row4;
-        col1Check = Col1;
-        col2Check = Col2;
-        col3Check = Col3;
-        col4Check = Col4;*/
-
-/*        if ((Row4 & Row3 & Row2 & Row1) == 0)
-        {
-            EALLOW;
-            //GpioDataRegs.GPATOGGLE.bit.GPIO19 = 1;
-            GpioDataRegs.GPASET.bit.GPIO19 = 1;
-            EDIS;
-        }
-        flag = Flag;
-        flagcheck = Row4 & Row3 & Row2 & Row1;*/
-
-
-        /*
-         * Print the current value of tickCount to a log buffer. 
-         */
-        //Log_info1("Tick Count = %d\n", tickCount);
     }
 }
 
@@ -220,16 +156,11 @@ Columns 1 2 3 4
 void myPBFxn(void)
 {
     pbcount++;
-    //Swi_post(swi0);
-/*    if (Col1 == 0) || Col2 == 0 || Col3 == 0 || Col4 == 0)
-    {
-
-    }*/
 }
 
 void KeyGetC(void)
 {
-
+    EALLOW;
     if (state == 1)
        {
            GpioDataRegs.GPASET.bit.GPIO3 = 1; // Set GPIO3 pin
@@ -258,6 +189,7 @@ void KeyGetC(void)
            //rowCheck();
            state = 1;
        }
+    EDIS;
     //tickCount = 0;
     int col;
     int row;
@@ -296,6 +228,27 @@ void KeyGetC(void)
     }
 }
 
+
+// Transmit a character from the SCI
+void scia_tmit(int a)
+{
+    while(SCI_getTxFifoStatus(mySci) != SCI_FifoStatus_Empty)
+    {
+    }
+
+    SCI_putDataBlocking(mySci, a);
+}
+
+void scia_msg(char * msg)
+{
+    int i;
+    i = 0;
+    while(msg[i] != '\0')
+    {
+        scia_xmit(msg[i]);
+        i++;
+    }
+}
 /*
 void rowCheck()
 {
